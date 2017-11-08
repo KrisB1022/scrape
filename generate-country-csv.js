@@ -1,7 +1,7 @@
 const getUrls = require('./helpers/get-urls')
 const getLocations = require('./helpers/get-locations')
 const generateCsv = require('./helpers/generate-csv')
-const { readFileSync } = require('fs')
+const { readFileSync, existsSync, mkdirSync } = require('fs')
 
 const countries = readFileSync('./sitemap/countries/country-list.csv', { encoding: 'utf8' }).trim().split('\n')
 
@@ -14,7 +14,11 @@ const sitemapUrls = countries.reduce(async (queue, country) => {
     try {
         if(url.indexOf('http') != -1) {
             const locationUrls = await getLocations(url)
-            const fileName = `sitemap/countries/${name}`
+            const dir = `sitemap/countries/${name}`
+
+            if(!existsSync(dir)) mkdirSync(dir)
+
+            const fileName = `${dir}/${name}`
             if(generateCsv(locationUrls, fileName)) console.log(`Successfully created ./${fileName}.csv\n`)
             return data
         } else {
