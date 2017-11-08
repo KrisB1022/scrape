@@ -12,7 +12,7 @@ const evaluateLinks = async (nightmare) => {
 
 const getLocations = async url => {
     console.log(`Grabbing locations from ${url}`)
-    const nightmare = new Nightmare({ show: true })
+    const nightmare = new Nightmare({ show: false })
     const tempArr = []
     let next = true
     let i = 1
@@ -22,11 +22,11 @@ const getLocations = async url => {
 
         while(next) {
             await nightmare.wait('.sitemap')
-            console.log('  checking page ...', i)
+            console.log('  checking page >>', i)
             tempArr.push(await evaluateLinks(nightmare))
             
             const nextPresent = await nightmare.exists('.sitemap .next a')
-            if(nextPresent && i <= 8) {
+            if(nextPresent) {
                 nightmare.click('.sitemap .next a')
                 i++
             } else {
