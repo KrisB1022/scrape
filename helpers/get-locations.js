@@ -2,7 +2,7 @@ const Nightmare = require('nightmare')
 
 const getLocations = async url => {
     console.log(`Grabbing locations from ${url}`)
-    const nightmare = new Nightmare({ show: true })
+    const nightmare = new Nightmare({ show: false })
 
     try {
         const locations = await nightmare
